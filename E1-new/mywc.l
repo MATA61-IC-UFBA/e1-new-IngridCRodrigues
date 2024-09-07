@@ -1,18 +1,23 @@
 %{
-int chars = 0;
-int words = 0;
-int lines = 0;
+#include <stdio.h>
 %}
 
+/* Definições de padrões */
 %%
-[a-zA-Z]+ { words++; chars += yyleng; }
-\n { chars++; lines++; }
-. { chars++; }
+[ \t\n]+     ;   /* Ignora espaços, tabulações e quebras de linha */
+[A-Za-z]+    { ++word_count; }  /* Conta palavras */
+.            ;   /* Ignora outros caracteres */
 
 %%
-int main(int argc, char **argv)
-{
+
+int word_count = 0;
+
+int main(int argc, char **argv) {
     yylex();
-    printf("%8d%8d%8d\n", lines, words, chars);
+    printf("Word count: %d\n", word_count);
     return 0;
+}
+
+int yywrap(void) {
+    return 1;
 }
