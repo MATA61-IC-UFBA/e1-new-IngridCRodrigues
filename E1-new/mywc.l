@@ -1,16 +1,19 @@
 %{
 #include <stdio.h>
-%}
-
-/* Definições de padrões */
-%%
-[ \t\n]+     ;   /* Ignora espaços, tabulações e quebras de linha */
-[A-Za-z]+    { ++word_count; }  /* Conta palavras */
-.            ;   /* Ignora outros caracteres */
-
-%%
 
 int word_count = 0;
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
+}
+%}
+
+%%
+
+[ \t\n]+    ;  /* Ignora espaços, tabulações e quebras de linha */
+[A-Za-z]+   { word_count++; }  /* Conta palavras */
+
+%%
 
 int main(int argc, char **argv) {
     yylex();
